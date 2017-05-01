@@ -39,6 +39,10 @@ namespace GroupProject
         //Dev: Morgan
         static public int SelectPhase(int player)
         {
+            //reset damage
+            P1.Damage = 0;
+            P2.Damage = 0;
+
             //call gaincharge
             P1.GainCharge();
             P2.Charge = 0;
@@ -56,12 +60,14 @@ namespace GroupProject
 
                     do
                     {
-
+                        ForegroundColor = ConsoleColor.White;
                         WriteLine($"{P1.Name}'s turn ");
+                        ForegroundColor = ConsoleColor.DarkGreen;
                         WriteLine($"Charge: {P1.Charge}");
 
                         // displays options for selection in a numbered list
 
+                        ForegroundColor = ConsoleColor.White;
                         WriteLine("Please select a move:\n1: Attack 1\n     1 charge, 10 damage");
                         WriteLine("2: Attack 2\n     2 charge, 20 damage");
                         WriteLine("3: Attack 3\n     3 charge, 30 damage");
@@ -74,10 +80,10 @@ namespace GroupProject
                         select = int.Parse(ReadLine());
 
                         // if the input that the input isn’t 1, 2, 3, 4, 5, 6, 7, then ask them to input again
-                        if ((select > 7) || select < 1) { WriteLine("the number you entered is outside of acceptable values, please reenter your input"); ReadKey(); }
+                        if ((select > 7) || select < 1) { ForegroundColor = ConsoleColor.Red; WriteLine("the number you entered is outside of acceptable values, please reenter your input"); ReadKey(); }
 
                         
-                        Clear();
+                        
                         if (select < 5)
                         {
                             if (select > P2.Charge)
@@ -85,9 +91,10 @@ namespace GroupProject
                                 ForegroundColor = ConsoleColor.Red;
                                 WriteLine("you do not have enough charge to use that move");
                                 select = -1;
+                                ReadKey();
                             }
                         }
-
+                        Clear();
 
                     } while (select > 7 || (select < 1));
 
@@ -109,12 +116,14 @@ namespace GroupProject
 
                     do
                     {
+                        ForegroundColor = ConsoleColor.White;
                         WriteLine($"{P2.Name}'s turn");
+                        ForegroundColor = ConsoleColor.DarkGreen;
                         WriteLine($"Charge: {P2.Charge}");
 
 
                         // displays options for selection in a numbered list
-
+                        ForegroundColor = ConsoleColor.White;
                         WriteLine("Please select a move:\n1: Attack 1\n     1 charge, 10 damage");
                         WriteLine("2: Attack 2\n     2 charge, 20 damage");
                         WriteLine("3: Attack 3\n     3 charge, 30 damage");
@@ -131,6 +140,7 @@ namespace GroupProject
                         {
                             ForegroundColor = ConsoleColor.Red;
                             WriteLine("the number you entered is outside of acceptable values, please reenter your input");
+                            ReadKey();
                         }
                         if (select < 5)
                         {
@@ -139,7 +149,9 @@ namespace GroupProject
                                 ForegroundColor = ConsoleColor.Red;
                                 WriteLine("you do not have enough charge to use that move");
                                 select = -1;
+                                ReadKey();
                             }
+                            Clear();
                         }
                     } while (select > 7 || (select < 1));
 
@@ -200,21 +212,24 @@ namespace GroupProject
 
             //player2 take damage
             int p2DamageTaken = (int)(P1.Damage * P2.BlockDamage * P2.ChargeDamage);
-
             P2.Health -= p2DamageTaken;
+
             //display $"{p1name} used {move}
+            ForegroundColor = ConsoleColor.DarkGreen;
             WriteLine($"{P1.Name} used {attackName1}");
 
             //display $"{p2Name} used {move}
             WriteLine($"{P2.Name} used {attackName2}");
 
             //{p1} lost {damage} health
+            ForegroundColor = ConsoleColor.Red;
             WriteLine($"{P1.Name} lost {p1DamageTaken}");
 
             //{p2} lost {damage} health
             WriteLine($"{P2.Name} lost {p2DamageTaken}");
 
             //{p1} total health: {health}
+            ForegroundColor = ConsoleColor.DarkRed;
             WriteLine($"total {P1.Name} health = {P1.Health}");
 
             //{p2} total health: {health}
@@ -234,24 +249,28 @@ namespace GroupProject
             // if player1 health is less than 0, conclusion = 1 and if player 2 health >= 0, conclusion = 2, if both > 0, conclusion = 3
             if ( P1.Health <=0 && !(P2.Health <= 0))
             {
+                ForegroundColor = ConsoleColor.DarkGreen;
                 conclusion = 1;
                 WriteLine($"{P1.Name} is dead. {P2.Name} wins.");
                 return conclusion;
             }
             else if (P2.Health <= 0 && !(P1.Health <= 0))
             {
+                ForegroundColor = ConsoleColor.DarkGreen;
                 conclusion = 2;
                 WriteLine($"{P2.Name} is dead. {P1.Name} wins.");
                 return conclusion;
             }
             else if (P2.Health <= 0 && (P1.Health <= 0))
             {
+                ForegroundColor = ConsoleColor.Red;
                 conclusion = 3;
                 WriteLine("You are both dead. Tie");
                 return conclusion;
             }
             else
             {
+                ForegroundColor = ConsoleColor.Green;
                 conclusion = 0;
                 WriteLine("next round");
                 return conclusion;

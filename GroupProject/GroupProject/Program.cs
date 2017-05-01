@@ -27,17 +27,6 @@ namespace GroupProject
                 Clear();
 
             } while (Phase.ConcludePhase() == 0);
-            
-
-            
         }
-
-
-        
-
-
-       
-        
-
     }
 }
